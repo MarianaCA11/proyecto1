@@ -1,12 +1,13 @@
 public class TabletaGrafica {
-    private String serial;
+    private int serial;
     private String marca;
     private float tamaño;
     private float precio;
-    private int almanenamiento;
+    private String almanenamiento;
     private float peso;
 
-    public TabletaGrafica(String serial, String marca, float tamaño, float precio, int almanenamiento, float peso) {
+    
+    public TabletaGrafica(int serial, String marca, float tamaño, float precio, String almanenamiento, float peso) {
         this.serial = serial;
         this.marca = marca;
         this.tamaño = tamaño;
@@ -15,11 +16,14 @@ public class TabletaGrafica {
         this.peso = peso;
     }
 
-    public String getSerial() {
+    public TabletaGrafica() {
+    }
+
+    public int getSerial() {
         return serial;
     }
 
-    public void setSerial(String serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
     }
 
@@ -47,11 +51,11 @@ public class TabletaGrafica {
         this.precio = precio;
     }
 
-    public int getAlmanenamiento() {
+    public String getAlmanenamiento() {
         return almanenamiento;
     }
 
-    public void setAlmanenamiento(int almanenamiento) {
+    public void setAlmanenamiento(String almanenamiento) {
         this.almanenamiento = almanenamiento;
     }
 

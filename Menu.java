@@ -1,3 +1,4 @@
+
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -6,11 +7,16 @@ public class Menu {
         Menu menu=new Menu();
         Scanner sc= new Scanner(System.in);
 LinkedList<Estudiantes_Ingenieria> estIng = new LinkedList<>();
+LinkedList<Estudiantes_Diseño>estuDis = new LinkedList<>();
+LinkedList<ComputadorPortatil>PC= new LinkedList<>();
         System.out.println("Sistema de Gestion de prestamo equipos electronicos San Juan de Dios" );
-
+        
         int opcion;
         MenuIngenieria a = new MenuIngenieria();
         MenuDiseño b = new MenuDiseño();
+
+       //estIng=a.Importar_Ingenieria();
+       //PC=a.importarComputadores();
 
         do {
             
@@ -23,6 +29,8 @@ LinkedList<Estudiantes_Ingenieria> estIng = new LinkedList<>();
                                 
             +"Seleccione una opción : ";
             System.out.print(menuP);
+            try {
+                
             opcion = sc.nextInt();
             switch (opcion) {  
             case 1:
@@ -35,9 +43,19 @@ LinkedList<Estudiantes_Ingenieria> estIng = new LinkedList<>();
             case 3:
             break;
             case 4:
+            System.out.println("Gracias por usar el sistema, Hasta pronto");
+            break;
+            default:
+            System.out.println("Opcion invalida, Intente de nuevo");
             break;
 
             }
+        } catch (Exception e) {
+            System.out.println("\nError: Por favor, ingrese un número válido.");
+            sc.nextLine(); 
+            opcion = 0; 
+        }
+
             }while (opcion != 4);
         }
        
