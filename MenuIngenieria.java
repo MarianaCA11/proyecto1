@@ -6,7 +6,7 @@ public class MenuIngenieria {
     LinkedList<Estudiantes_Ingenieria> listaEstudiantes = new LinkedList<>();
     Estudiantes_Ingenieria estI = new Estudiantes_Ingenieria();
     ComputadorPortatil pc = new ComputadorPortatil();
-    MenuIngenieria menuing = new MenuIngenieria();
+
     String cedula;
     String nombre;
     String apellido;
@@ -21,6 +21,7 @@ public class MenuIngenieria {
     String procesador;
     Scanner sc = new Scanner(System.in);
 
+
     public MenuIngenieria MenuIng() {
         int opcion;
         do {
@@ -34,39 +35,71 @@ public class MenuIngenieria {
                     + "Ingrese la opción deseada: ";
 
             System.out.print(menuI);
-            opcion = sc.nextInt();
+            try {
+                opcion = sc.nextInt();
 
-            switch (opcion) {
-                case 1:
-                    System.out.println("Registrando préstamo...");
-                    registro(listaEstudiantes);
-                    RegistroPC(listaPCs);
-                    break;
-                case 2:
-                    System.out.println("Modificando préstamo...");
-                    Modificar(menuI, listaEstudiantes);
-                    break;
-                case 3:
-                    System.out.println("Procesando devolución...");
-                    break;
-                case 4:
-                    System.out.println("Buscando equipo...");
-                    Buscar(listaEstudiantes, menuI);
-                    break;
-                case 5:
-                    System.out.println("Volviendo al menú principal...");
-                    break;
-                default:
-                    System.out.println("Opción no válida");
-                    break;
+                switch (opcion) {
+                    case 1:
+                        System.out.println("\nRegistrando préstamo...");
+                        registro(listaEstudiantes);
+                        RegistroPC(listaPCs);
+                        break;
+                    case 2:
+                        System.out.println("\nModificando préstamo...");
+                        Modificar(menuI, listaEstudiantes);
+                        break;
+                    case 3:
+                        System.out.println("\nProcesando devolución...");
+                        devolución(listaEstudiantes);
+                        break;
+                    case 4:
+                        System.out.println("\nBuscando equipo...");
+                        Buscar(listaEstudiantes, menuI);
+                        break;
+                    case 5:
+                        System.out.println("\nExportando Archivo...");
+                        ExportarArchivo(listaEstudiantes, listaPCs);
+                        break;
+                    
+                    default:
+                        System.out.println("\nOpción no válida");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("\nError: Por favor, ingrese un número válido.");
+                sc.nextLine();
+                opcion = 0;
             }
+
         } while (opcion != 5);
         return this;
     }
 
+    
+
+    public void ExportarArchivo(LinkedList<Estudiantes_Ingenieria> lista,
+            LinkedList<ComputadorPortatil> Listapc) {
+        ExportarArchivo I = new ExportarArchivo();
+        I.exportarING(lista, Listapc);
+
+    }
+
+    public LinkedList<Estudiantes_Ingenieria> Importar_Ingenieria() {
+        Importar_Ingenieria i = new Importar_Ingenieria();
+        LinkedList<Estudiantes_Ingenieria> lista_ing = i.importarIngenieria();
+        return lista_ing;
+    }
+
+    public LinkedList<ComputadorPortatil> importarComputadores(){
+        Importar_Ingenieria j = new Importar_Ingenieria();
+        LinkedList<ComputadorPortatil> lista_PC = j.importarComputadores() ;
+        return lista_PC;
+    }
+
     public LinkedList<Estudiantes_Ingenieria> registro(LinkedList<Estudiantes_Ingenieria> lista_ing) {
-        System.out.println("REGISTRAR PRÉSTAMO DE EQUIPO");
-        Estudiantes_Ingenieria estI = new Estudiantes_Ingenieria();
+        System.out.println("\n------REGISTRAR PRÉSTAMO DE EQUIPO------");
+        // solucionar tema de estudiante ya existe
+
         do {
             System.out.println("Ingrese el número de cédula: ");
             cedula = sc.next();
@@ -128,15 +161,22 @@ public class MenuIngenieria {
         } while (!telefono.matches("\\d{7,10}"));
 
         do {
-            System.out.println("Ingrese el número de semestre: ");
-            semestre = sc.nextInt();
-            if (semestre < 0 || semestre > 12) {
-                System.out.println("Semestre inválido, ingrese un valor entre 1 y 12.");
-            } else {
-                estI.setSemestre(semestre);
+
+            try {
+                System.out.println("Ingrese el número de semestre: ");
+                semestre = sc.nextInt();
+                if (semestre < 0 || semestre > 12) {
+                    System.out.println("Semestre inválido, ingrese un valor entre 1 y 12.");
+                } else {
+                    estI.setSemestre(semestre);
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("ingrese un numero valido para el semestre");
+                sc.nextLine();
             }
 
-        } while (semestre < 0 || semestre > 12);
+        } while (true);
 
         do {
             System.out.println("Ingrese el promedio: ");
@@ -200,86 +240,114 @@ public class MenuIngenieria {
 
             }
         } while (!marca.matches("^[a-zA-Z ]+$"));
-        // falta verificacion que no este prestado
 
         do {
-            System.out.println("Ingrese el tamaño del computador en pulgadas: ");
-            tamaño = sc.nextFloat();
-            if (tamaño <= 0.0) {
+            System.out.println("Ingrese el tamaño del computador: ");
+            String tam = sc.next();
+            tam = tam.replace(',', '.');
 
-            } else {
-                pc.setTamaño(tamaño);
+            try {
+                tamaño = Float.parseFloat(tam);
+                if (tamaño <= 0.0) {
 
+                } else {
+                    pc.setTamaño(tamaño);
+                    break;
+
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Por favor, ingrese un número.");
             }
-        } while (tamaño <= 0.0);
+        } while (true);
 
         do {
             System.out.println("Ingrese el precio del computador: ");
-            precio = sc.nextFloat();
-            if (precio <= 0.0) {
+            String tam = sc.next();
+            tam = tam.replace(',', '.');
+            try {
 
-            } else {
-                pc.setPrecio(precio);
+                precio = Float.parseFloat(tam);
+                if (precio <= 0.0) {
 
+                } else {
+                    pc.setPrecio(precio);
+                    break;
+
+                }
+            } catch (Exception e) {
+                System.out.println("ingrese el precio correcto del computador ");
+                sc.nextLine();
             }
-        } while (precio <= 0.0);
 
-        int opcion;
+        } while (true);
+
+        int opcion = 0;
         do {
 
-            String menu1 = "\n--  Sistema Operativo --\n"
-                    + "1. Windows 7\n"
-                    + "2. Windows 10\n"
-                    + "3. Windows 11\n"
-                    + "Seleccione una opción";
-            System.out.println(menu1);
-            opcion = sc.nextInt();
-            switch (opcion) {
-                case 1:
-                    pc.setSistema("Windows 7");
-                    break;
+            try {
+                String menu1 = "\n--  Sistema Operativo --\n"
+                        + "1. Windows 7\n"
+                        + "2. Windows 10\n"
+                        + "3. Windows 11\n"
+                        + "Seleccione una opción";
+                System.out.println(menu1);
+                opcion = sc.nextInt();
+                switch (opcion) {
+                    case 1:
+                        pc.setSistema("Windows 7");
+                        break;
 
-                case 2:
-                    pc.setSistema("Windows 10");
-                    break;
-                case 3:
-                    pc.setSistema("Windows 11");
-                    break;
+                    case 2:
+                        pc.setSistema("Windows 10");
+                        break;
+                    case 3:
+                        pc.setSistema("Windows 11");
+                        break;
 
-                default:
-                    System.out.println("opción invalida");
-                    break;
+                    default:
+                        System.out.println("opción invalida");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("ingrese una opción valida");
+                sc.nextLine();
+
             }
 
         } while (opcion < 1 || opcion > 3);
 
+        int option = 0;
         do {
+            try {
+                String menu2 = "\n-- Procesador computador--\n"
+                        + "1. AMD Ryzen\n"
+                        + "2. Intel core i5\n"
+                        + "Seleccione una opción";
 
-            String menu2 = "\n-- Procesador computador--\n"
-                    + "1. AMD Ryzen\n"
-                    + "2. Intel core i5\n"
-                    + "Seleccione una opción";
+                System.out.println(menu2);
+                option = sc.nextInt();
+                switch (option) {
+                    case 1:
+                        pc.setProcesador("AMD Ryzen");
+                        break;
 
-            System.out.println(menu2);
-            opcion = sc.nextInt();
-            switch (opcion) {
-                case 1:
-                    pc.setProcesador("AMD Ryzen");
-                    break;
+                    case 2:
+                        pc.setProcesador("Intel core i5");
+                        break;
 
-                case 2:
-                    pc.setProcesador("Intel core i5");
-                    break;
-
-                default:
-                    System.out.println("opción invalida");
-                    break;
+                    default:
+                        System.out.println("opción invalida");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Por favor ingrese un número.");
+                sc.nextLine();
             }
 
-        } while (opcion < 1 || opcion > 2);
+        } while (option < 1 || option > 2);
 
         lista_PC.add(pc);
-
         return lista_PC;
     }
 
@@ -288,20 +356,20 @@ public class MenuIngenieria {
             System.out.println("La lista de estudiantes está vacía ");
             return null;
         }
-        System.out.println("Ingrese el número de serial o  cédula a buscar: ");
+        System.out.println("Ingrese el número de serial o  cédula a buscar: \n");
         String buscar = sc.next();
         Estudiantes_Ingenieria objresult = new Estudiantes_Ingenieria();
         for (Estudiantes_Ingenieria estudiantes_Ingenieria : lista_ing) {
             if (estudiantes_Ingenieria.getSerial().equalsIgnoreCase(buscar) ||
                     estudiantes_Ingenieria.getCedula().equalsIgnoreCase(buscar)) {
                 System.out.println("Equipo encontrado: " + estudiantes_Ingenieria.toString());
+                System.out.println("-------------------------------------------------------");
                 objresult.setCedula(estudiantes_Ingenieria.getCedula());
                 objresult.setNombre(estudiantes_Ingenieria.getNombre());
                 objresult.setApellido(estudiantes_Ingenieria.getApellido());
-                objresult.setTelefono(estudiantes_Ingenieria.getTelefono());  
-                objresult.setSemestre(estudiantes_Ingenieria.getSemestre());  
+                objresult.setTelefono(estudiantes_Ingenieria.getTelefono());
+                objresult.setSemestre(estudiantes_Ingenieria.getSemestre());
                 objresult.setPromedio(estudiantes_Ingenieria.getPromedio());
-      
 
             } else {
                 System.out.println("El equipo no se encontro");
@@ -310,80 +378,112 @@ public class MenuIngenieria {
         }
         return objresult;
 
-   
     }
-    
+
     public LinkedList<Estudiantes_Ingenieria> Modificar(String nombre, LinkedList<Estudiantes_Ingenieria> lista_ing) {
         Estudiantes_Ingenieria o = new Estudiantes_Ingenieria();
-        o = menuing.Buscar(lista_ing, nombre);
+        o = this.Buscar(lista_ing, nombre);
         int opcion = 0;
         if (!o.getNombre().isEmpty()) {
-
             for (Estudiantes_Ingenieria p : lista_ing) {
-
                 if (p.getNombre().equalsIgnoreCase(o.getNombre())) {
-                    System.out.println("Ingrese 1: Para modificar telefono:");
-                    System.out.println("Ingrese 2: Para modificar el semestre: ");
-                    System.out.println("Pulse cualquier numero para modificar los dos registros:");
+                    do {
+                        String Menum = "1. Para modificar telefono\n"
+                                + "2. Para modificar el semestre\n"
+                                + "3. modificar los dos registros\n"
+                                + "4 Salir\n"
+                                + "Seleccione la opcion deseada ";
+                        System.out.println(Menum);
+                        try {
+                            opcion = sc.nextInt();
+                            sc.nextLine();
 
-                    while (!sc.hasNextInt()) {
-                        System.out.println("Ingrese un numero");
-                        sc.nextInt();
+                            switch (opcion) {
+                                case 1:
+                                    do {
+                                        System.out.println("Ingrese el número de teléfono:");
+                                        telefono = sc.next();
+                                        if (!telefono.matches("\\d{7,10}")) {
+                                            System.out.println("Teléfono inválido, ingrese de 7 a 10 dígitos.");
+                                        } else {
+                                            estI.setTelefono(telefono);
+                                            System.out.println("Modificado exitosamente");
+                                        }
 
-                    }
-                    opcion = sc.nextInt();
-                    switch (opcion) {
-                        case 1:
-                            System.out.println("Ingrese el numero de telefono:");
-                            telefono=sc.nextLine();
-                            if (!telefono.matches("[0-9]+")) {
-                                System.out.println("Telefono invalido, vuelva a intentarlo.");
-                            } else {
-                                p.setTelefono(telefono);  
+                                    } while (!telefono.matches("\\d{7,10}"));
+                                    break;
+
+                                case 2:
+                                    System.out.println("Ingrese el semestre:");
+                                    semestre = sc.nextInt();
+                                    if (semestre < 1 || semestre > 10) {
+                                        System.out.println("Semestre invalido, vuelva a intentarlo.");
+                                    } else {
+                                        p.setSemestre(semestre);
+                                        System.out.println("Modificado exitosamente");
+                                    }
+
+                                    break;
+
+                                case 3:
+                                    do {
+                                        System.out.println("Ingrese el número de teléfono: ");
+                                        telefono = sc.next();
+                                        if (!telefono.matches("\\d{7,10}")) {
+                                            System.out.println("Teléfono inválido, ingrese de 7 a 10 dígitos.");
+                                        } else {
+                                            estI.setTelefono(telefono);
+                                            System.out.println("Modificado exitosamente");
+                                        }
+
+                                    } while (!telefono.matches("\\d{7,10}"));
+
+                                    System.out.println("Ingrese el semestre:");
+                                    semestre = sc.nextInt();
+                                    if (semestre < 1 || semestre > 10) {
+                                        System.out.println("Semestre invalido, vuelva a intentarlo");
+                                    } else {
+                                        p.setSemestre(semestre);
+                                        System.out.println("Modificado exitosamente");
+                                    }
+                                    break;
+                                case 4:
+                                    System.out.println("Saliendo del menu...");
+
+                                default:
+                                    System.out.println("opcion invalida");
+                                    break;
                             }
-                          
-
-                            break;
-                        case 2:
-                            System.out.println("Ingrese el semestre:");
-                            semestre=sc.nextInt();
-                            if (!telefono.matches("[0-9]+")) {
-                                System.out.println("Semestre invalido, vuelva a intentarlo.");
-                            } else {
-                                p.setSemestre(semestre);
-                            }
-                           
-                        default:
-                        System.out.println("Ingrese el telefono:");
-                        telefono = sc.nextLine();
-                        if (!telefono.matches("[0-9]+")) {
-                            System.out.println("Telefono invalido, vuelva a intentarlo.");
-                        } else {
-                            p.setTelefono(telefono);  // Actualizar el teléfono
+                        } catch (Exception e) {
+                            System.out.println("\nError: Por favor, ingrese un número válido.");
+                            sc.nextLine();
+                            opcion = 0;
                         }
-
-                        System.out.println("Ingrese el semestre:");
-                        semestre = sc.nextInt();
-                        if (semestre < 1 || semestre > 12) {
-                            System.out.println("Semestre invalido, vuelva a intentarlo.");
-                        } else {
-                            p.setSemestre(semestre);  
-                        }
-                            break;
-                    }
-
+                    } while (opcion != 4);
                 }
-
             }
         }
-
         return lista_ing;
     }
 
     public LinkedList<Estudiantes_Ingenieria> devolución(LinkedList<Estudiantes_Ingenieria> lista_ing) {
-        System.out.println("Devolver computador");
-        
-       
+        System.out.println("Ingrese el numero de cedula o serial del estudiante a devolver: ");
+        String numeros = sc.next();
+        boolean estan = false;
+        for (Estudiantes_Ingenieria estudiantes_Ingenieria : lista_ing) {
+            if (estudiantes_Ingenieria.getCedula().equals(numeros)
+                    || estudiantes_Ingenieria.getSerial().equals(numeros)) {
+                lista_ing.remove(estudiantes_Ingenieria);
+                System.out.println("COMPUTADOR REGRESADO EXITOSAMENTE\n");
+                estan = true;
+                break;
+
+            }
+        }
+        if (!estan) {
+            System.out.println("No se encontro estudiante con esa cedula.");
+        }
+
         return lista_ing;
     }
 

@@ -5,6 +5,7 @@ public class ComputadorPortatil {
     private float precio;
     private String sistema;
     private String procesador;
+    
     public ComputadorPortatil(String serial, String marca, float tamaño, float precio, String sistema, String procesador) {
         this.serial = serial;
         this.marca = marca;
